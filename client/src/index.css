@@ -1,0 +1,262 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Snyk Brand Colors (2025 Design System) - Cybersecurity Purple */
+  --snyk-blue: hsl(260, 70%, 55%); /* #7C3AED - Primary Purple (Cybersecurity) */
+  --snyk-bg: hsl(260, 37%, 97%); /* #F6F4FA - Background Light (Whisper) */
+  --snyk-text: hsl(240, 97%, 6%); /* #01011E - Dark Text (Blue Charcoal) */
+  --snyk-blue-light: hsl(260, 80%, 65%); /* #8B5CF6 - Light Purple variant */
+  --snyk-gray-light: hsl(210, 17%, 95%); /* #F3F4F6 - Light Gray */
+  
+  /* Base theme colors mapped to Snyk brand */
+  --background: hsl(260, 37%, 97%);
+  --foreground: hsl(240, 97%, 6%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(240, 97%, 6%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(240, 97%, 6%);
+  --primary: hsl(260, 70%, 55%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(210, 17%, 95%);
+  --secondary-foreground: hsl(240, 97%, 6%);
+  --muted: hsl(210, 17%, 95%);
+  --muted-foreground: hsl(215, 15%, 47%);
+  --accent: hsl(210, 17%, 95%);
+  --accent-foreground: hsl(260, 70%, 55%);
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+  --border: hsl(214, 32%, 91%);
+  --input: hsl(214, 32%, 91%);
+  --ring: hsl(260, 70%, 55%);
+  --chart-1: hsl(260, 70%, 55%);
+  --chart-2: hsl(160, 60%, 45%);
+  --chart-3: hsl(30, 80%, 55%);
+  --chart-4: hsl(280, 65%, 60%);
+  --chart-5: hsl(340, 75%, 55%);
+  --sidebar: hsl(0, 0%, 100%);
+  --sidebar-foreground: hsl(240, 97%, 6%);
+  --sidebar-primary: hsl(260, 70%, 55%);
+  --sidebar-primary-foreground: hsl(0, 0%, 100%);
+  --sidebar-accent: hsl(210, 17%, 95%);
+  --sidebar-accent-foreground: hsl(260, 70%, 55%);
+  --sidebar-border: hsl(214, 32%, 91%);
+  --sidebar-ring: hsl(260, 70%, 55%);
+  --font-sans: 'Inter', sans-serif;
+  --font-serif: 'Georgia', serif;
+  --font-mono: 'Menlo', monospace;
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: hsl(240, 97%, 6%);
+  --foreground: hsl(260, 37%, 97%);
+  --card: hsl(240, 10%, 9%);
+  --card-foreground: hsl(260, 37%, 97%);
+  --popover: hsl(240, 10%, 9%);
+  --popover-foreground: hsl(260, 37%, 97%);
+  --primary: hsl(260, 70%, 65%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(240, 10%, 15%);
+  --secondary-foreground: hsl(260, 37%, 97%);
+  --muted: hsl(240, 10%, 15%);
+  --muted-foreground: hsl(215, 15%, 60%);
+  --accent: hsl(240, 10%, 15%);
+  --accent-foreground: hsl(260, 70%, 65%);
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+  --border: hsl(240, 10%, 15%);
+  --input: hsl(240, 10%, 15%);
+  --ring: hsl(260, 70%, 65%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+}
+
+/* Snyk-specific styling */
+.snyk-gradient {
+  background: linear-gradient(135deg, var(--snyk-blue) 0%, var(--snyk-blue-light) 100%);
+}
+
+.doberman-icon {
+  filter: drop-shadow(0 2px 4px rgba(20, 93, 235, 0.2));
+}
+
+/* Custom button styling to match Snyk brand */
+.btn-snyk-primary {
+  background-color: var(--snyk-blue);
+  color: white;
+  border: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-snyk-primary:hover {
+  background-color: hsl(260, 70%, 50%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
+}
+
+/* Event type badge colors */
+.badge-org-create {
+  background-color: hsl(217, 91%, 95%);
+  color: hsl(217, 91%, 35%);
+}
+
+.badge-user-invite {
+  background-color: hsl(142, 76%, 95%);
+  color: hsl(142, 76%, 30%);
+}
+
+.badge-project-create {
+  background-color: hsl(262, 83%, 95%);
+  color: hsl(262, 83%, 35%);
+}
+
+.badge-api-access {
+  background-color: hsl(25, 95%, 95%);
+  color: hsl(25, 95%, 35%);
+}
+
+/* Chat interface animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.chat-message {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+/* Loading spinner */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin 2s linear infinite;
+}
+
+/* Snyk Brand Utility Classes */
+.snyk-blue {
+  color: hsl(220, 84%, 50%);
+}
+
+.bg-snyk-blue {
+  background-color: hsl(220, 84%, 50%);
+}
+
+.border-snyk-blue {
+  border-color: hsl(220, 84%, 50%);
+}
+
+/* Security-focused color scheme adjustments */
+.security-alert {
+  background-color: hsl(0, 84%, 95%);
+  color: hsl(0, 84%, 35%);
+  border-left: 4px solid hsl(0, 84%, 60%);
+}
+
+.security-success {
+  background-color: hsl(142, 76%, 95%);
+  color: hsl(142, 76%, 30%);
+  border-left: 4px solid hsl(142, 76%, 45%);
+}
+
+.security-info {
+  background-color: hsl(217, 91%, 95%);
+  color: hsl(217, 91%, 35%);
+  border-left: 4px solid var(--snyk-blue);
+}
+
+/* Table hover effects */
+.audit-table-row {
+  transition: all 0.15s ease-in-out;
+}
+
+.audit-table-row:hover {
+  background-color: hsl(260, 37%, 98%);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(20, 93, 235, 0.08);
+}
+
+/* Professional spacing and typography */
+.snyk-card {
+  border-radius: var(--radius);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  border: 1px solid hsl(214, 32%, 91%);
+}
+
+.snyk-input {
+  border: 1px solid hsl(214, 32%, 91%);
+  border-radius: var(--radius);
+  transition: all 0.2s ease-in-out;
+}
+
+.snyk-input:focus {
+  outline: none;
+  border-color: var(--snyk-blue);
+  box-shadow: 0 0 0 3px rgba(20, 93, 235, 0.1);
+}
+
+/* Responsive design enhancements */
+@media (max-width: 768px) {
+  .mobile-stack {
+    flex-direction: column;
+  }
+  
+  .mobile-full-width {
+    width: 100%;
+  }
+}
+
+/* Executive Summary Custom Styling - Purple Theme */
+.executive-summary-content h1 {
+  color: #7c2d92 !important;
+  border-bottom: 2px solid #e9d5ff !important;
+  padding-bottom: 0.5rem !important;
+}
+
+.executive-summary-content h2 {
+  color: #7c2d92 !important;
+  margin-top: 1.5rem !important;
+}
+
+.executive-summary-content h3 {
+  color: #8b5cf6 !important;
+  margin-top: 1rem !important;
+}
+
+.executive-summary-content ul li::marker {
+  color: #a855f7 !important;
+}
+
+.executive-summary-content ol li::marker {
+  color: #a855f7 !important;
+}
+
+.executive-summary-content strong {
+  color: #111827 !important;
+  font-weight: 600 !important;
+}
+
+.executive-summary-content blockquote {
+  border-left-color: #e9d5ff !important;
+  background-color: #faf5ff !important;
+}

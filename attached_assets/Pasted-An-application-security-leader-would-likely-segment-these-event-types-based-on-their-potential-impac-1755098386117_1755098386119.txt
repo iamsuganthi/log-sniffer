@@ -1,0 +1,83 @@
+An application security leader would likely segment these event types based on their potential impact on the organization's security posture, with the highest criticality assigned to events that could lead to data breaches, unauthorized access, or the bypassing of security controls. Here is a possible segmentation by color, with explanations for each category.
+
+### **Red - High Criticality**
+
+These events represent a significant and immediate threat. They often involve changes to core security settings, user permissions, or the creation/deletion of high-privilege accounts. An immediate alert and investigation would be warranted for any of these events.
+
+* `org.service_account.create`: The creation of a service account could lead to a highly privileged, non-human actor with extensive access.
+* `org.service_account.delete`: Deleting a service account could indicate an attempt to cover tracks.
+* `org.service_account.edit`: Editing a service account could involve escalating its privileges.
+* `org.user.role.permissions.edit`: Directly changing the permissions of a user role is a critical security action that could grant unauthorized access.
+* `org.policy.delete`: Deleting a security policy could remove a critical control.
+* `org.policy.edit`: Editing a security policy could weaken its effectiveness.
+* `org.policy.create`: Creating a new policy could be benign, but it could also be a malicious policy that bypasses existing controls.
+* `org.user.remove`: Removing a user could be an attempt to cover tracks or lock a legitimate user out.
+* `org.user.role.delete`: Deleting a role could lead to a large group of users suddenly losing their access, or it could be a malicious act to remove a secure role.
+* `org.user.provision.delete`: Similar to user removal, this could be a malicious attempt to revoke access.
+* `org.integration.delete`: Deleting an integration, especially a security-related one, could sever a critical security control or log source.
+* `org.integration.settings.edit`: Changing settings for an integration could weaken its security.
+* `org.cloud_config.settings.edit`: Modifying cloud configurations could have a broad impact on the entire application's security.
+* `org.sast_settings.edit`: Editing SAST settings could lead to security vulnerabilities being ignored or misconfigured scans.
+
+### **Yellow - Medium Criticality**
+
+These events are important to monitor but may not require an immediate, high-priority investigation unless they occur in a suspicious pattern or context. They often involve changes to application configurations, project settings, or user management.
+
+* `org.app.create`: The creation of a new application could be a legitimate action, but it could also be a rogue application.
+* `org.app.delete`: Deleting an application could be a legitimate cleanup, or it could be an attempt to remove evidence.
+* `org.app.edit`: Editing an application could involve changing its configuration, which may have security implications.
+* `org.app_bot.create`: Similar to a service account, a bot could have significant access.
+* `org.user.add`: Adding a new user is a routine action, but it's important to verify the user and their role.
+* `org.user.invite`: Inviting a new user needs to be monitored to ensure only legitimate users are being brought into the organization.
+* `org.user.invite.revoke`: Revoking an invite is a normal user management task, but could be part of a larger, suspicious series of events.
+* `org.user.invite_link.create`: Creating an invite link could be dangerous if it is widely shared.
+* `org.user.provision.create`: Provisioning a new user is a key event that needs to be monitored.
+* `org.webhook.add`: Adding a new webhook could be used to exfiltrate data.
+* `org.project.delete`: Deleting a project could remove a critical code base from monitoring.
+* `org.project.remove`: Removing a project from an organization could have similar implications to deleting it.
+* `org.project.settings.edit`: Changing a project's settings could weaken its security posture.
+* `org.project.pr_check.edit`: Editing PR check settings could bypass a critical security control.
+* `org.project.fix_pr.auto_open`: Automatically opening a fix PR could introduce a change without manual oversight.
+* `org.project.fix_pr.manual_open`: While manual, this is still a change to a project's code.
+* `org.ignore_policy.edit`: Editing an ignore policy could cause vulnerabilities to be ignored.
+* `org.integration.create`: Creating a new integration could introduce new risks or access points.
+* `org.project.ignore.create`: Creating a new ignore rule for a project could hide a known vulnerability.
+* `org.request_access_settings.edit`: Changing access settings could make it easier for unauthorized users to gain access.
+* `org.target.create`: Creating a new target could be an attempt to scan a new, rogue application.
+* `org.target.delete`: Deleting a target could be an attempt to stop monitoring a specific application.
+
+### **Green - Low Criticality**
+
+These events are typically routine, administrative, or informational. They are still important to log for auditing purposes, but they don't usually require immediate action or alerting. A security leader would likely review these events in aggregate or as part of a routine audit.
+
+* `api.access`: API access is a routine event, though a high volume or unusual pattern could be suspicious.
+* `org.collection.create`: Creating a collection is a benign organizational task.
+* `org.collection.delete`: Deleting a collection is a benign organizational task.
+* `org.collection.edit`: Editing a collection is a benign organizational task.
+* `org.create`: Creating a new organization is typically a one-time event for an enterprise.
+* `org.delete`: Deleting an organization is a rare, high-level administrative event.
+* `org.edit`: Editing the organization's name or other metadata is a low-risk action.
+* `org.language_settings.edit`: Changing language settings has no security implications.
+* `org.notification_settings.edit`: Notification settings are administrative and not directly tied to security controls.
+* `org.org_source.create`: The creation of a source of truth for an organization is an administrative event.
+* `org.org_source.delete`: Deleting a source is an administrative event.
+* `org.org_source.edit`: Editing a source is an administrative event.
+* `org.project_filter.create`: Creating a project filter is for administrative purposes.
+* `org.project_filter.delete`: Deleting a project filter is for administrative purposes.
+* `org.project.add`: Adding a project to an organization is a routine administrative task.
+* `org.project.attributes.edit`: Editing project attributes is a low-risk, administrative action.
+* `org.project.edit`: Editing project details is a low-risk, administrative action.
+* `org.project.monitor`: Monitoring a project is a benign action.
+* `org.project.stop_monitor`: Stopping monitoring is a low-risk administrative action, but could be suspicious in context.
+* `org.project.tag.add`: Adding a tag to a project is administrative.
+* `org.project.tag.remove`: Removing a tag is administrative.
+* `org.project.test`: Running a test on a project is a routine development activity.
+* `org.settings.feature_flag.edit`: Feature flags are usually for product functionality and not security controls.
+* `org.user.invite.accept`: A user accepting an invite is a normal onboarding event.
+* `org.user.invite_link.accept`: A user accepting a link is a normal onboarding event.
+* `org.user.leave`: A user leaving is a normal offboarding event.
+* `org.user.role.create`: Creating a new role is an administrative task, though it could be a precursor to assigning malicious permissions.
+* `org.user.role.details.edit`: Editing a role's name or description is a low-risk action.
+* `org.user.role.edit`: Editing a role's name or description is a low-risk action.
+* `org.webhook.delete`: Deleting a webhook could be a legitimate cleanup.
+* `user.org.notification_settings.edit`: A user changing their own notification settings is a low-risk action.
