@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="client/public/favicon.png" alt="LogSniffer Logo" width="150">
+</p>
+
 # Snyk Audit Log Dashboard
 
 ## Overview
