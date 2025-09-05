@@ -2,11 +2,11 @@
   <img src="client/public/favicon.png" alt="LogSniffer Logo" width="150">
 </p>
 
-# Snyk Audit Log Dashboard
+# LogSniffer - Snyk Audit Log Dashboard
 
 ## Overview
 
-This is a full-stack web application that provides a security-focused dashboard for analyzing Snyk audit logs. The application integrates with Snyk's API to fetch audit log data and uses Google's Gemini AI to provide intelligent insights and recommendations about security events. Built with React, Express, and PostgreSQL, it offers real-time audit log monitoring, AI-powered analysis, and an interactive chat interface for security insights.
+LogSniffer is a full-stack web application that provides a security-focused dashboard for analyzing Snyk audit logs. The application integrates with Snyk's API to fetch audit log data and uses Google's Gemini AI to provide intelligent insights and recommendations about security events. Built with React, Express, and PostgreSQL, it offers real-time audit log monitoring, AI-powered analysis, and an interactive chat interface for security insights.
 
 ## User Preferences
 
