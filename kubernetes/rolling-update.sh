@@ -1,1 +1,1 @@
-kubectl rollout restart deployment/logsniffer -n apjctf
+kubectl rollout restart deployment/logsniffer -n logsniffer
