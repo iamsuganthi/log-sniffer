@@ -11,10 +11,10 @@ The application has been updated to use **session-based storage** instead of per
 
 ## Key Security Features
 
-### 1. Session-Based Storage
-- API tokens, group IDs, and org IDs are stored in encrypted session cookies
+### 1. Cookie-Based Session Storage
+- API tokens, group IDs, and org IDs are stored in server-side memory with secure HTTP-only cookies for session identification
 - No persistent storage of sensitive credentials in the database
-- Each browser/user has their own isolated configuration
+- Each browser/user has their own isolated configuration via unique session cookies
 
 ### 2. Automatic Expiration
 - **Default expiration**: 30 minutes
@@ -24,12 +24,14 @@ The application has been updated to use **session-based storage** instead of per
 
 ### 3. Secure Cookie Configuration
 ```typescript
-cookie: {
-  secure: process.env.NODE_ENV === 'production', // HTTPS only in production
+const cookieOptions = {
   httpOnly: true, // Prevent XSS attacks
+  secure: false, // Set to true for HTTPS in production
+  sameSite: 'strict' as const, // CSRF protection
   maxAge: 30 * 60 * 1000, // 30 minutes
-  sameSite: 'strict' // CSRF protection
-}
+  path: '/', // Available for all paths
+  domain: undefined // Let browser determine domain
+};
 ```
 
 ### 4. New API Endpoints
@@ -48,10 +50,17 @@ cookie: {
 
 ## Environment Variables
 
-Add to your `.env` file:
+The current implementation uses `cookieSessionStorage` and doesn't require additional environment variables. The system generates cryptographically secure session IDs automatically.
+
+**For Docker deployment:**
 ```bash
-# Session secret for secure cookie signing (REQUIRED)
-# Generate with: openssl rand -base64 32
+# Tells the server to bind to 0.0.0.0 for external access
+DOCKER=true
+```
+
+**Optional (if using alternative session systems):**
+```bash
+# Only needed if switching to express-session middleware
 SESSION_SECRET=your_session_secret_here_32_chars_minimum
 ```
 
@@ -72,21 +81,25 @@ SESSION_SECRET=your_session_secret_here_32_chars_minimum
 ### Setting Configuration with Custom Expiration
 ```typescript
 // 15-minute expiration for sensitive environments
-SessionBasedStorage.setApiConfiguration(req, config, EXPIRATION_TIMES.SHORT);
+cookieSessionStorage.setApiConfiguration(req, res, config, 15);
+
+// Default 30-minute expiration
+cookieSessionStorage.setApiConfiguration(req, res, config);
 
 // 1-hour expiration for development
-SessionBasedStorage.setApiConfiguration(req, config, EXPIRATION_TIMES.LONG);
+cookieSessionStorage.setApiConfiguration(req, res, config, 60);
 ```
 
 ### Checking Session Status
 ```typescript
-const config = SessionBasedStorage.getApiConfiguration(req);
-if (!config) {
+const result = cookieSessionStorage.getApiConfiguration(req, res);
+if (!result) {
   // Session expired or not configured
   return res.status(400).json({ error: "Session expired, please reconfigure" });
 }
 
-const timeLeft = SessionBasedStorage.getTimeUntilExpiration(req);
+const { config, sessionId } = result;
+const timeLeft = cookieSessionStorage.getTimeUntilExpiration(req, res);
 console.log(`Configuration expires in ${timeLeft} minutes`);
 ```
 
@@ -105,19 +118,21 @@ console.log(`Configuration expires in ${timeLeft} minutes`);
 
 ## Security Best Practices Implemented
 
-1. **No Persistent Token Storage**: API tokens never touch the database
-2. **Session Isolation**: Each browser session is completely isolated
-3. **Automatic Expiration**: Forced re-authentication prevents stale access
-4. **Secure Cookies**: HTTP-only, secure, and SameSite protection
-5. **Clear Separation**: Session data completely separate from application data
-6. **Explicit Cleanup**: Manual and automatic session clearing capabilities
+1. **No Persistent Token Storage**: API tokens stored only in server memory, never in database
+2. **Session Isolation**: Each browser gets unique session ID via secure cookies
+3. **Automatic Expiration**: 30-minute default expiration with automatic cleanup
+4. **Secure Cookies**: HTTP-only, SameSite=strict protection against XSS/CSRF
+5. **Memory-Based Storage**: Session data stored in server memory with automatic cleanup
+6. **Cryptographic Session IDs**: Secure random session ID generation
+7. **Explicit Cleanup**: Manual clear functionality and automatic expired session removal
 
 ## Recommendations
 
-1. **Set SESSION_SECRET**: Always use a strong, unique session secret in production
-2. **Use HTTPS**: Enable secure cookies by setting `NODE_ENV=production`
-3. **Monitor Sessions**: Consider logging session creation/expiration for audit trails
-4. **Educate Users**: Inform users about session expiration and the need to reconfigure
-5. **Backup Strategy**: Since configurations aren't persistent, ensure users can easily reconfigure
+1. **Use HTTPS in Production**: Set `secure: true` in cookie options for HTTPS environments
+2. **Docker Deployment**: Set `DOCKER=true` environment variable for container deployments
+3. **Monitor Sessions**: Use `/api/debug/sessions` endpoint for session monitoring
+4. **Educate Users**: Inform users about 30-minute session expiration
+5. **Cleanup Strategy**: Server automatically cleans expired sessions every 5 minutes
+6. **Session Security**: Sessions use cryptographically secure random IDs (32 bytes)
 
 This approach follows security principles of **least privilege**, **defense in depth**, and **time-limited access** to significantly reduce the risk associated with API token storage.
