@@ -17,7 +17,7 @@ IMAGE_NAME=$GCP_REGION"-docker.pkg.dev/$GCP_PROJECT/$GCP_ARTIFACT_REGISTRY/$NAME
 
 
 # Build the Docker image
-docker build --platform linux/amd64 -t "$IMAGE_NAME" .
+docker build --no-cache --platform linux/amd64 -t "$IMAGE_NAME" .
 
 # Output the image name
 echo "Docker image built: $IMAGE_NAME"
