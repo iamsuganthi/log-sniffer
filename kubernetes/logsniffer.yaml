@@ -22,7 +22,7 @@ spec:
           ports:
             - containerPort: 5000
           env:
-            - name: GOOGLE_API_KEY
+            - name: GEMINI_API_KEY
               valueFrom:
                 secretKeyRef:
                   name:  google-api-key-secret

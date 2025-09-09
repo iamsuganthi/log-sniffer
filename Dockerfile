@@ -1,4 +1,4 @@
-# Use the official Node.js v18 LTS image
+# Use the official Node.js v20 LTS image
 FROM node:20
 
 # Set the working directory inside the container
@@ -12,6 +12,9 @@ RUN npm install
 
 # Copy the rest of the application code to the container
 COPY . .
+
+# Set environment variable to indicate we're running in Docker
+ENV DOCKER=true
 
 # Expose the port your application runs on
 EXPOSE 5000
